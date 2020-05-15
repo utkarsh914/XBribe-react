@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import Pagination from "react-js-pagination";
-import axios from 'axios';
+import axios from '../../services/axiosInstance'
 import Loader from "../Common/Loader";
 import Header from '../Common/Header';
 import Footer from '../Common/Footer';
@@ -26,7 +26,7 @@ class Paginate extends Component {
   }
 
   fetchData(param) {
-    axios.get('http://localhost:4444/org/dashboard', { params: param, withCredentials: true })
+    axios.get('/org/dashboard', { params: param, withCredentials: true })
     .then(response=>{
       this.setState({ data: response.data, filter: response.data.filter })
     })
@@ -85,7 +85,7 @@ class FilterModal extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    axios.get('http://localhost:4444/org/dashboard', { params: this.state, withCredentials: true })
+    axios.get('/org/dashboard', { params: this.state, withCredentials: true })
     .then(response=>{
       this.props.sendData(response.data);
     })
@@ -191,7 +191,7 @@ class Nav extends Component {
   }
 
   logout() {
-    axios.get('http://localhost:4444/org/logout', { withCredentials: true })
+    axios.get('/org/logout', { withCredentials: true })
     .then(response=>{
       if (response.status === 200) {
         this.props.setLoggedOut()

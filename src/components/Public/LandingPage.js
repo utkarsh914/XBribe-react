@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {Script} from '../../utils/ToggleScript';
-import axios from 'axios';
+// import axios from 'axios';
+import axios from '../../services/axiosInstance'
 import Loader from "../Common/Loader";
 import './Styles.css';
 
@@ -224,7 +225,8 @@ export default class LandingPage extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:4444/')
+    // axios.get('http://localhost:4444/')
+    axios.get('/')
     .then(response=>{
       this.setState({
         posts: response.data.posts,

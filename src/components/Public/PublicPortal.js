@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../services/axiosInstance'
 import Pagination from "react-js-pagination";
 import './Styles.css';
 import Loader from "../Common/Loader";
@@ -28,7 +28,7 @@ class Paginate extends Component {
   }
 
   fetchData(param) {
-    axios.get('http://localhost:4444/public', { params: param })
+    axios.get('/public', { params: param })
     .then(response=>{
       this.setState({ data: response.data, filter: response.data.filter })
     })
@@ -87,7 +87,7 @@ class FilterModal extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    axios.get('http://localhost:4444/public', { params: this.state })
+    axios.get('/public', { params: this.state })
     .then(response=>{
       this.props.sendData(response.data);
     })

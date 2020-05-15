@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../services/axiosInstance'
 import Loader from "../Common/Loader";
 
 export default class Login extends Component {
@@ -24,7 +24,7 @@ export default class Login extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    axios.post('http://localhost:4444/org/login', {
+    axios.post('/org/login', {
       orgId: this.state.orgId,
       password: this.state.password
     },  { withCredentials: true } )
