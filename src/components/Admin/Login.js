@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import axios from '../../services/axiosInstance'
+import axios from '../../services/axios'
 import Loader from "../Common/Loader";
 
 export default class Login extends Component {
