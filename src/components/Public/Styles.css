@@ -1,0 +1,24 @@
+#navbar {display: none; transition: all 0.2s;}
+.shownav { animation: show 0.2s linear; position: fixed; width: 100%; z-index: 5;}
+@keyframes show {
+  from { top: -100px;}
+  to { top: 0px;}
+}
+#intro {
+  flex-direction: column;
+  color: #ddd;
+  min-height: 100vh; width: 100%;
+  background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
+}
+#intro p {font-size: 18px;}
+.btn { width: 150px; height: 45px; border-radius: 100px;}
+.btn-grad-red {background-image: linear-gradient(to right, #EB3349 0%, #F45C43 51%, #EB3349 100%)}
+.btn-grad { transition: 1s ease; }
+.btn-grad:hover { background-position: right center; }
+#section2, #stats, #chartContainer { background-color: #efefef; }
+.mycard {box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0); border-radius: 0.25rem; background-color: white; transition: 0.25s;}
+.mycard:hover {box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.05);}
+.case { background-color: #efefef; box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0); border-radius: 0.25rem 0 0 0.25rem; border-right: 10px solid #565656; box-sizing: border-box;}
+.statsbox { border-bottom: 8px solid #007bff; }
+#curve_chart { min-height: 400px; }
+.page-link, .modal-toggle, .logout-btn {cursor: pointer;}
