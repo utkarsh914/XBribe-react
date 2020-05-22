@@ -326,10 +326,6 @@ export default class AdminDashboard extends Component {
     this.setState({ loaded: true })
   }
 
-  setAuthenticated(){
-    this.setState({ redirectTo: '/admin/login'})
-  }
-
   render() {
     if (!this.state.loaded) return <Loader/>
     if (this.state.redirectTo) return ( <Redirect to={{ pathname: this.state.redirectTo }} /> )
@@ -338,7 +334,7 @@ export default class AdminDashboard extends Component {
         <div>
           < Header />
           < Nav 
-            setLoggedOut={ ()=> this.setAuthenticated() }
+            setLoggedOut={ ()=>this.setState({ redirectTo: '/admin/login'}) }
             type = {'admin'}
             loggedIn = {true}
           />
@@ -349,30 +345,4 @@ export default class AdminDashboard extends Component {
       )
     }
   }
-
-  // getUser() {
-  //   axios.get('/admin/', { withCredentials: true })
-  //   .then(response => {
-  //     if (response.data.user) {
-  //       console.log('Get User: There is a user saved in the server session: ')
-  //       this.setState({
-  //         loggedIn: true,
-  //         username: response.data.user.adminId,
-  //         role: 'admin'
-  //       })
-  //     } else {
-  //       console.log('Get user: no user');
-  //       this.setState({
-  //         loggedIn: false,
-  //         username: null,
-  //         role: null,
-  //         redirectTo: '/admin/login'
-  //       })
-  //     }
-  //   })
-  //   .catch(error=>{
-  //       console.log(error)
-  //       if (error.response.status === 401) this.setState({ redirectTo: '/admin/login'})
-  //   })
-  // }
 }

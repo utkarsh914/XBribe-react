@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import axios from '../../services/axiosInstance'
 
 function logout(props) {
-  console.log('props of Nav at logout() fn\n', props)
   axios.get(`/${props.type}/logout`, { withCredentials: true })
   .then(response=>{
     console.log('admin logout response: ', response)
@@ -23,12 +22,17 @@ export default function Nav(props) {
   let headerName = (type==='admin') ? 'ADMINISTRATOR': (type==='org') ? props.user.orgName : 'Public Portal'
   // let loggedIn = props.loggedIn
 
-  if (type!=='admin') return null
+  // if (type!=='admin') return null
 
   return(
     <nav className="navbar navbar-expand-sm bg-dark navbar-dark sticky-top card no-round">
       <div className="container">
-        <Link className="navbar-brand" to="/admin">${headerName}</Link>
+        {(!props.user.orgId) ? null:
+          <Link className="navbar-brand" to="/org">{props.user.orgName}</Link>
+        }
+        {(type!=='admin') ? null: 
+          <Link className="navbar-brand" to="/admin">{headerName}</Link>   
+        }
         <button className="navbar-toggler justify-content-end" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -41,6 +45,11 @@ export default function Nav(props) {
             {(type!=='admin') ? null: 
               <li className="nav-item">
                 <Link className="nav-link" to="/admin/manage-org">Manage Organizations</Link>
+              </li> 
+            }
+            {(type!=='admin') ? null: 
+              <li className="nav-item">
+                <Link className="nav-link" to="/faker">Manage Database</Link>
               </li>
             }
             

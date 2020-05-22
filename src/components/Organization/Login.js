@@ -30,9 +30,7 @@ export default class Login extends Component {
     },  { withCredentials: true } )
     .then(response=>{
       if (response.status === 200) {
-        this.setState({ redirectTo: '/org/dashboard' }, ()=>{
-          this.props.setLoggedIn(response.data.user)
-        })
+        this.setState({ redirectTo: '/org/dashboard' })
       }
     })
     .catch(err=>{

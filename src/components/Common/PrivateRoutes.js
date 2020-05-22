@@ -46,13 +46,15 @@ export const AdminRoute = ({ component: Component, ...rest }) => {
 
 
 export const OrgRoute = ({ component: Component, ...rest }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     async function getAuth(){
       let response = await axios.get('/org/', { withCredentials: true })
       if (!response.data.user) setIsAuthenticated(false)
       else if (response.data.user.orgId) {
+        setUser(response.data.user)
         setIsAuthenticated(true)
       } else {
         setIsAuthenticated(false)
@@ -70,7 +72,7 @@ export const OrgRoute = ({ component: Component, ...rest }) => {
       !isAuthenticated ? (
         <Redirect to='/org/login'/>
       ) : (
-        <Component {...props} />
+        <Component  user={user} {...props} />
       )
     }
     />
