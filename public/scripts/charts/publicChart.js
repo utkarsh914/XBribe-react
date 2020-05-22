@@ -7,7 +7,7 @@ function drawChart() {
 
   var jsonData = $.ajax({
     // url: "http://localhost:4444/chartdata",
-    url: "https://test-getoxdev.herokuapp.com/api/chartdata",
+    url: "https://xbribe.herokuapp.com/api/chartdata",
     dataType: "json",
     async: false
   }).responseText;

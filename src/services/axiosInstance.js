@@ -2,7 +2,7 @@
 var axiosOrig = require('axios');
 
 var axios = axiosOrig.create({
-  baseURL: 'http://localhost:4444',
+  baseURL: 'http://localhost:4444/api',
   // baseURL: 'https://test-getoxdev.herokuapp.com/api',
   /* other custom settings */
 });
