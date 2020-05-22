@@ -18,19 +18,26 @@ const Post = (props) => (
 
 class Paginate extends Component {
 
-  state = {
-    data: {},
-    filter: {}
+  constructor(){
+    super()
+    this.state = {
+      loaded: false,
+      data: {},
+      filter: {}
+    }
+    this.fetchData(this.state.filter)
   }
+  
 
   componentDidMount() {
-    this.fetchData(this.state.filter)
+    window.scrollTo(0, 0);
+    // this.fetchData(this.state.filter)
   }
 
   fetchData(param) {
     axios.get('/public', { params: param })
     .then(response=>{
-      this.setState({ data: response.data, filter: response.data.filter })
+      this.setState({ data: response.data, filter: response.data.filter, loaded: true })
     })
     .catch(err=>{
       console.log(err)
@@ -38,14 +45,19 @@ class Paginate extends Component {
   }
  
   handlePageChange(pageNumber) {
-    let filter = this.state.filter
-    filter.pageNo = pageNumber
-    this.fetchData(filter)
+    this.setState({loaded: false}, ()=>{
+      let filter = this.state.filter
+      filter.pageNo = pageNumber
+      this.fetchData(filter)
+    })
   }
  
   render() {
+    if (!this.state.loaded) return <Loader/>
     return (
-      <div>
+      <div className='w3-animate-opacity'>
+        < Header />
+        < Nav />
         < FilterModal
           orgs={ this.state.data.orgs }
           error={ this.state.data.error }
@@ -56,15 +68,16 @@ class Paginate extends Component {
         < Container data={this.state.data} />
         <div className="pagination justify-content-center mt-5">
           <Pagination
-            activePage={this.state.filter.pageNo || 1}
-            itemsCountPerPage={this.state.filter.size || 10}
-            totalItemsCount={this.state.filter.totalCount || 1}
+            activePage={parseInt(this.state.filter.pageNo) || 1}
+            itemsCountPerPage={parseInt(this.state.filter.size) || 10}
+            totalItemsCount={parseInt(this.state.filter.totalCount) || 1}
             pageRangeDisplayed={10}
             onChange={this.handlePageChange.bind(this)}
             itemClass={"page-item"}
             linkClass={"page-link"}
           />
         </div>
+        < Footer />
       </div>
     );
   }
@@ -299,26 +312,24 @@ class Container extends Component {
 
 export default class PublicPortal extends Component {
 
-  state = {
-    loaded: false
-  }
-
   componentDidMount() {
     window.scrollTo(0, 0);
-    this.setState({ loaded: true })
+  }
+
+  setLoaded(value) {
+    console.log('fn from prop, ', value)
+    if (value===true) this.setState({ loaded: true }, ()=>console.log('loaded set to true'))
+    else this.setState({ loaded: false },  ()=>console.log('loaded set to false'))
   }
 
   render() {
-    if (!this.state.loaded) return <Loader/>
-    else {
       return(
         <div>
-          < Header />
-          < Nav />
+          {/* < Header />
+          < Nav /> */}
           < Paginate />
-          < Footer />
+          {/* < Footer /> */}
         </div>
       )
-    }
   }
 }

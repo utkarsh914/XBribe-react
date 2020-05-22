@@ -22,3 +22,5 @@
 .statsbox { border-bottom: 8px solid #007bff; }
 #curve_chart { min-height: 400px; }
 .page-link, .modal-toggle, .logout-btn {cursor: pointer;}
+.no-round {border-radius: 0px;}
+.w3-animate-opacity{animation:opac 0.5s} @keyframes opac{from{opacity:0} to{opacity:1}}

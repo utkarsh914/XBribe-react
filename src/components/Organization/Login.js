@@ -63,7 +63,7 @@ export default class Login extends Component {
     else return(
       <div>
 
-        <nav className="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
+        <nav className="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center no-round">
           <ul className="navbar-nav">
             <li className="nav-item">
               <Link className="nav-link" to="/">Go to Public Home</Link>

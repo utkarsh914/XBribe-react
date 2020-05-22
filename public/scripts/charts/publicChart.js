@@ -6,8 +6,8 @@ google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
 
   var jsonData = $.ajax({
-    url: "http://localhost:4444/chartdata",
-    //url: "https://test-getoxdev.herokuapp.com/chartdata",
+    // url: "http://localhost:4444/chartdata",
+    url: "https://test-getoxdev.herokuapp.com/api/chartdata",
     dataType: "json",
     async: false
   }).responseText;
@@ -18,7 +18,7 @@ function drawChart() {
   var options = {
     // curveType: 'function',
     legend: { position: 'bottom' },
-    colors: ['#1a1a1a', '#006600']
+    colors: ['#ee0000', '#006600']
   };
 
   var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));

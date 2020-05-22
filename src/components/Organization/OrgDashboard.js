@@ -5,6 +5,7 @@ import axios from '../../services/axiosInstance'
 import Loader from "../Common/Loader";
 import Header from '../Common/Header';
 import Footer from '../Common/Footer';
+// import Nav from "../Common/Nav";
 
 // function to render all posts
 const Post = (props) => (
@@ -328,7 +329,7 @@ export default class OrgDashboard extends Component {
     this.setState({ redirectTo: '/org/login'}, ()=> {
       this.props.setLoggedOut()
     })
-  }
+  } 
 
   render() {
     if (!this.state.loaded) return <Loader/>
@@ -337,7 +338,7 @@ export default class OrgDashboard extends Component {
       return(
         <div>
           < Header />
-          < Nav setLoggedOut={ ()=> this.setAuthenticated() } user={this.props.user}/>
+          < Nav setLoggedOut={ ()=> this.setAuthenticated() } user={this.props.user} />
           < Paginate />
           < Footer />
         </div>

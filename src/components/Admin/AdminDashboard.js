@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+// import { Link, Redirect } from 'react-router-dom';
 import Pagination from "react-js-pagination";
 import axios from '../../services/axiosInstance'
 import Loader from "../Common/Loader";
 import Header from '../Common/Header';
 import Footer from '../Common/Footer';
+import Nav from "../Common/Nav";
 
 // function to render all posts
 const Post = (props) => (
@@ -184,53 +186,49 @@ class FilterModal extends Component {
   }
 }
 
-class Nav extends Component {
+// class Nav extends Component {
 
-  // shouldComponentUpdate() {
-  //   return false;
-  // }
+//   logout() {
+//     axios.get('/admin/logout', { withCredentials: true })
+//     .then(response=>{
+//       if (response.status === 200) {
+//         this.props.setLoggedOut()
+//       }
+//     })
+//     .catch(err=> {
+//       console.log(err)
+//     })
+//   }
 
-  logout() {
-    axios.get('/admin/logout', { withCredentials: true })
-    .then(response=>{
-      if (response.status === 200) {
-        this.props.setLoggedOut()
-      }
-    })
-    .catch(err=> {
-      console.log(err)
-    })
-  }
-
-  render() {
-    return(
-      <nav className="navbar navbar-expand-sm bg-dark navbar-dark sticky-top card no-round">
-        <div className="container">
-        <Link className="navbar-brand" to="/admin">ADMINISTRATOR</Link>
-        <button className="navbar-toggler justify-content-end" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
-          <ul className="navbar-nav">
-          <li className="nav-item">
-              <Link className="nav-link" to="/">Public Home</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/admin/manage-org">Manage Organizations</Link>
-            </li>
-            <li className="nav-item">
-              <div className="nav-link modal-toggle" data-toggle="modal" data-target="#filterModal">Filter Reports</div>
-            </li>
-            <li className="nav-item">
-              <div className="nav-link logout-btn" onClick={this.logout.bind(this)}>Logout</div>
-            </li>
-          </ul>
-        </div>	
-        </div>
-      </nav>
-    )
-  }
-}
+//   render() {
+//     return(
+//       <nav className="navbar navbar-expand-sm bg-dark navbar-dark sticky-top card no-round">
+//         <div className="container">
+//         <Link className="navbar-brand" to="/admin">ADMINISTRATOR</Link>
+//         <button className="navbar-toggler justify-content-end" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+//           <span className="navbar-toggler-icon"></span>
+//         </button>
+//         <div className="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+//           <ul className="navbar-nav">
+//           <li className="nav-item">
+//               <Link className="nav-link" to="/">Public Home</Link>
+//             </li>
+//             <li className="nav-item">
+//               <Link className="nav-link" to="/admin/manage-org">Manage Organizations</Link>
+//             </li>
+//             <li className="nav-item">
+//               <div className="nav-link modal-toggle" data-toggle="modal" data-target="#filterModal">Filter Reports</div>
+//             </li>
+//             <li className="nav-item">
+//               <div className="nav-link logout-btn" onClick={this.logout.bind(this)}>Logout</div>
+//             </li>
+//           </ul>
+//         </div>	
+//         </div>
+//       </nav>
+//     )
+//   }
+// }
 
 class Container extends Component {
 
@@ -328,6 +326,30 @@ export default class AdminDashboard extends Component {
     this.setState({ loaded: true })
   }
 
+  setAuthenticated(){
+    this.setState({ redirectTo: '/admin/login'})
+  }
+
+  render() {
+    if (!this.state.loaded) return <Loader/>
+    if (this.state.redirectTo) return ( <Redirect to={{ pathname: this.state.redirectTo }} /> )
+    else {
+      return(
+        <div>
+          < Header />
+          < Nav 
+            setLoggedOut={ ()=> this.setAuthenticated() }
+            type = {'admin'}
+            loggedIn = {true}
+          />
+          {/* < Nav sendData={(loginStatus)=> this.setState({loggedIn: loginStatus, redirectTo: '/admin/login'})} /> */}
+          < Paginate />
+          < Footer />
+        </div>
+      )
+    }
+  }
+
   // getUser() {
   //   axios.get('/admin/', { withCredentials: true })
   //   .then(response => {
@@ -353,25 +375,4 @@ export default class AdminDashboard extends Component {
   //       if (error.response.status === 401) this.setState({ redirectTo: '/admin/login'})
   //   })
   // }
-
-  setAuthenticated(){
-    this.props.setLoggedOut()
-    this.setState({ redirectTo: '/admin/login'})
-  }
-
-  render() {
-    if (!this.state.loaded) return <Loader/>
-    if (this.state.redirectTo) return ( <Redirect to={{ pathname: this.state.redirectTo }} /> )
-    else {
-      return(
-        <div>
-          < Header />
-          < Nav setLoggedOut={ ()=> this.setAuthenticated() } />
-          {/* < Nav sendData={(loginStatus)=> this.setState({loggedIn: loginStatus, redirectTo: '/admin/login'})} /> */}
-          < Paginate />
-          < Footer />
-        </div>
-      )
-    }
-  }
 }

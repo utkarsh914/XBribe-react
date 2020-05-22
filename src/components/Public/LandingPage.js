@@ -243,7 +243,7 @@ export default class LandingPage extends Component {
   render() {
     if (!this.state.loaded) return <Loader/>
     return(
-      <div>
+      <div className='w3-animate-opacity'>
         < LandingPageNav />
         < Intro />
         < Section2 />

@@ -31,7 +31,7 @@ export default class Login extends Component {
     .then(response=>{
       if (response.status === 200) {
         this.setState({ redirectTo: '/admin/dashboard' }, ()=>{
-          this.props.setLoggedIn()
+          // this.props.setLoggedIn()
         })
       }
     })
@@ -63,7 +63,7 @@ export default class Login extends Component {
     else return(
       <div>
 
-        <nav className="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
+        <nav className="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center no-round">
           <ul className="navbar-nav">
             <li className="nav-item">
               <Link className="nav-link" to="/">Public Home</Link>
