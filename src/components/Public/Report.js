@@ -249,6 +249,7 @@ class ReportForm extends Component {
     super(props)
     this.state = {
       orgId: 'MOAAFW_O128WQ',
+      department: '',
       picsArray: [], audiosArray: [], videosArray: []
     }
     this.handleChange = this.handleChange.bind(this);
@@ -296,6 +297,26 @@ class ReportForm extends Component {
     }
   }
 
+  renderDepartmentList(){
+    if (this.props.orgs && this.state.orgId){
+      let orgId = this.state.orgId
+      return (this.props.orgs).map((key, i)=>{
+        if (key.orgId===orgId){
+          return (
+            (!key.departments.length>0)
+              ?
+              <option className="w3-input w3-border" value='none'> None </option>
+              :
+              (key.departments).map((key2, j)=>{
+                return (<option className="w3-input w3-border" value={key2} key={j}> {key2} </option>)
+              })
+          )
+        }
+        else return null
+      })
+    }
+  }
+
   render() {
     return (
       <div className='container'>
@@ -308,6 +329,15 @@ class ReportForm extends Component {
           <select className="custom-select" name="orgId" required 
             onChange={this.handleChange} >
               {this.renderOrgList()}
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>Department:</label>
+          <select className="custom-select" name="department" required 
+            onChange={this.handleChange} >
+              <option className="" value='' disabled selected> Select Department </option>
+              {this.renderDepartmentList()}
           </select>
         </div>
 
