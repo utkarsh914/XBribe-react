@@ -81,8 +81,8 @@ class Section2 extends Component {
                   <img className="p-4" alt="img" src='/images/m1.png'/>
                   <h4>Register Complaint</h4>
                   <hr/>
-                  <p>Mobirise is an easy website builder - just drop site elements to your page, add content and style it to look the way you like.</p>
-                  <Link to="/"><button className="btn btn-primary">Register</button></Link>
+                  <p>Easily register a complaint on this portal.</p>
+                  <Link to="/report"><button className="btn btn-primary">Register</button></Link>
                 </div>
               </div>
             </div>
@@ -93,7 +93,7 @@ class Section2 extends Component {
                   <img className="p-4" alt="img" src="/images/m2.png"/>
                   <h4>Track Complaint</h4>
                   <hr/>
-                  <p>Mobirise is an easy website builder - just drop site elements to your page, add content and style it to look the way you like.</p>
+                  <p>Easily track the status of your previous complaint.</p>
                   <Link to="/status"><button className="btn btn-primary">Track Status</button></Link>
                 </div>
               </div>
@@ -105,7 +105,7 @@ class Section2 extends Component {
                   <img className="p-4" alt="img" src="/images/m3.png"/>
                   <h4>Send Reminder</h4>
                   <hr/>
-                  <p>Mobirise is an easy website builder - just drop site elements to your page, add content and style it to look the way you like.</p>
+                  <p>If your complaint hasn't been worked upon, you can remind us.</p>
                   <Link to="/"><button className="btn btn-primary">Remind</button></Link>
                 </div>
               </div>
