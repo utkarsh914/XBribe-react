@@ -7,6 +7,7 @@ import axios from '../../services/axiosInstance'
 // import storage from '../../services/FirebaseConfig'
 import firebase from "firebase/app";
 import "firebase/storage";
+import UploadPreview from './UploadPreview';
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -131,15 +132,31 @@ class Upload extends Component {
     if (e.target.id === "uploadPicsBtn") {
       this.batchUpload(caseId, 'pics', this.state.pics)
     }
-    if (e.target.id === "uploadAudiosBtn") {
+    else if (e.target.id === "uploadAudiosBtn") {
       this.batchUpload(caseId, 'audios', this.state.audios)
     }
-    if (e.target.id === "uploadVideosBtn") {
+    else if (e.target.id === "uploadVideosBtn") {
       this.batchUpload(caseId, 'videos', this.state.videos)
     }
   }
 
-  	//fn to batch upload pics, audios, videos one at a time using another fn named uploadFileAsPromise
+  //generate file previews to display while uploading
+  generatePreviewData = (file) => {
+    if (!file) return
+    console.log('generate prev: ', file)
+    const fr = new FileReader();
+    return new Promise((resolve, reject) => {
+      fr.addEventListener('load', (e) => {
+        resolve(fr.result);
+      });
+      fr.addEventListener('error', (e) => {
+        reject();
+      });
+      fr.readAsDataURL(file);
+    });
+  }
+
+  //fn to batch upload pics, audios, videos one at a time using another fn named uploadFileAsPromise
   batchUpload = async (caseId, fileType, fileArray) => {
 		console.log('batch upload ran for: ',caseId, fileType, fileArray)
     //return if vars not defined
@@ -155,7 +172,7 @@ class Upload extends Component {
 		for (let i = 0; i < fileArray.length; i++) {
 			let path = `${caseId}/${fileType}/${fileArray[i].name}`
 			let file = fileArray[i]
-			await this.uploadFileAsPromise(file, path).then((url)=>{
+			await this.uploadFileAsPromise(file, path, fileType).then((url)=>{
         console.log('File available at', url);
         //store the url in state
         this.setState(oldState => (
@@ -176,28 +193,45 @@ class Upload extends Component {
     )
   }
   
-	uploadFileAsPromise = (file, path) => {
-    return new Promise((resolve, reject) => {
+	uploadFileAsPromise = (file, path, fileType) => {
+    return new Promise(async (resolve, reject) => {
         var storageRef = firebase.storage().ref(path);
         var task = storageRef.put(file);
 
-        //Update progress bar
+        this.setState({uploadingFileType: fileType})
+        //generate preview of img to display while uploading
+        var previewPic
+        if (fileType==='pics') previewPic = await this.generatePreviewData(file)
+        else previewPic = true
+
         task.on('state_changed',
-					(snapshot)=>{
-						var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          (snapshot)=>{
+            var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log(percentage)
-            this.setState({ percentage: percentage })
-					},
-					(error)=>{
+            this.setState({
+              percentage: percentage,
+              filesUploading: true,
+              filesCurrentlyUploading: previewPic
+            })
+          },
+          (error)=>{
             console.log(error);
-            this.setState({ error })
-						reject(error);
-					},
-					()=>{
-						task.snapshot.ref.getDownloadURL().then((downloadURL) => {
-							resolve(downloadURL)
-						});
-					}
+            this.setState({
+              error: error,
+              filesUploading: false,
+              filesCurrentlyUploading: null
+            })
+            reject(error);
+          },
+          ()=>{
+            task.snapshot.ref.getDownloadURL().then((downloadURL) => {
+              this.setState({
+                filesUploading: false,
+                filesCurrentlyUploading: null
+              })
+              resolve(downloadURL)
+            });
+          }
         );
     });
 	}
@@ -205,6 +239,16 @@ class Upload extends Component {
   render() {
     return (
       <div>
+
+        {(this.state.filesUploading && this.state.filesCurrentlyUploading) ?
+          <UploadPreview 
+            percentage={this.state.percentage}
+            filesCurrentlyUploading={this.state.filesCurrentlyUploading}
+            fileType={this.state.uploadingFileType}
+          /> :
+          null
+        }
+
         <div className="form-group">
           <label>Attach Images:</label>
           {(!this.state.picsUploaded) ? 
