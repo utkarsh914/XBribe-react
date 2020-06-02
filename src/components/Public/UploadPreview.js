@@ -15,7 +15,7 @@ export default function UploadPreview(props) {
   }
 
   let previewSrc
-  if (props.fileType==='pics') previewSrc = props.picsCurrentlyUploading
+  if (props.fileType==='pics') previewSrc = props.filesCurrentlyUploading
   else if (props.fileType==='audios') previewSrc = '/images/icons/audio.png'
   else if (props.fileType==='videos') previewSrc = '/images/icons/video.png'
 
