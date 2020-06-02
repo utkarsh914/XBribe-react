@@ -9,7 +9,7 @@ import './Styles.css';
 //function to render all posts
 const Post = (props) => (
   <div className={props.case.status==='resolved' ? 'alert alert-success mb-2' : 'alert alert-dark mb-2'}>
-    <h5>Organization: {props.orgs[props.case.orgId]}</h5>
+    <h5>Ministry: {props.ministries[props.case.ministryId]}</h5>
     <p className="mb-0">{props.case.place}, {props.case.date}</p>
   </div>
 )
@@ -37,7 +37,7 @@ class LandingPageNav extends Component {
           <div className="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <Link className="nav-link" to="/org">Organization Login</Link>
+                <Link className="nav-link" to="/ministry">Ministry Login</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/admin">Admin Login</Link>
@@ -57,7 +57,7 @@ class Intro extends Component {
         <div className="container">
           <img className="mb-3" alt="img" src="/images/bprd_logo.png" width="250px"/>
           <h1 className="mb-3">Bureau of Police Research and Development</h1>
-          <p className="mb-4">The Bureau of Police Research and Development (BPR&D), was set up on 28 August 1970 in furtherance of the objective of the Government of India for the modernisation of police forces. It has evolved as a multifaceted, consultancy organisation. At present it has 4 divisions – Research, Development, Training and Correctional Administration.</p>
+          <p className="mb-4">The Bureau of Police Research and Development (BPR&D), was set up on 28 August 1970 in furtherance of the objective of the Government of India for the modernisation of police forces. It has evolved as a multifaceted, consultancy Ministry. At present it has 4 divisions – Research, Development, Training and Correctional Administration.</p>
           <button className="btn btn-danger mb-2 mr-2">Click Here</button>
           <button className="btn btn-light mb-2">Click Here</button>
         </div>
@@ -122,7 +122,7 @@ class Reports extends Component {
 
   showReports() {
     return this.props.posts.map((currentPost, i)=>{
-      return <Post case={currentPost} orgs={this.props.orgs} key={i} />
+      return <Post case={currentPost} ministries={this.props.ministries} key={i} />
     })
   }
 
@@ -220,7 +220,7 @@ export default class LandingPage extends Component {
   state = {
     loaded: false,
     posts: [],
-    orgs: {},
+    ministries: {},
     count: {}
   }
 
@@ -230,7 +230,7 @@ export default class LandingPage extends Component {
     .then(response=>{
       this.setState({
         posts: response.data.posts,
-        orgs: response.data.orgs,
+        ministries: response.data.ministries,
         count: response.data.count,
         loaded: true
       })
@@ -247,7 +247,7 @@ export default class LandingPage extends Component {
         < LandingPageNav />
         < Intro />
         < Section2 />
-        < Reports posts={this.state.posts} orgs={this.state.orgs} />
+        < Reports posts={this.state.posts} ministries={this.state.ministries} />
         < Stats count={this.state.count} />
         < CurveChart />
       </div>

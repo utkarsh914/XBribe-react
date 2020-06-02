@@ -19,7 +19,7 @@ function logout(props) {
 export default function Nav(props) {
 
   let type = props.type
-  let headerName = (type==='admin') ? 'ADMINISTRATOR': (type==='org') ? props.user.orgName : 'Public Portal'
+  let headerName = (type==='admin') ? 'ADMINISTRATOR': (type==='ministry') ? props.user.ministryName : 'Public Portal'
   // let loggedIn = props.loggedIn
 
   // if (type!=='admin') return null
@@ -27,8 +27,8 @@ export default function Nav(props) {
   return(
     <nav className="navbar navbar-expand-sm bg-dark navbar-dark sticky-top card no-round">
       <div className="container">
-        {(!props.user.orgId) ? null:
-          <Link className="navbar-brand" to="/org">{props.user.orgName}</Link>
+        {(!props.user.ministryId) ? null:
+          <Link className="navbar-brand" to="/ministry">{props.user.ministryName}</Link>
         }
         {(type!=='admin') ? null: 
           <Link className="navbar-brand" to="/admin">{headerName}</Link>   
@@ -44,7 +44,7 @@ export default function Nav(props) {
             
             {(type!=='admin') ? null: 
               <li className="nav-item">
-                <Link className="nav-link" to="/admin/manage-org">Manage Organizations</Link>
+                <Link className="nav-link" to="/admin/manage-ministry">Manage Ministries</Link>
               </li> 
             }
             {(type!=='admin') ? null: 

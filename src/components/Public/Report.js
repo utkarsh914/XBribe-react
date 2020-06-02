@@ -292,7 +292,7 @@ class ReportForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      orgId: 'MOAAFW_O128WQ',
+      ministryId: 'MOAAFW_O128WQ',
       department: '',
       picsArray: [], audiosArray: [], videosArray: []
     }
@@ -333,19 +333,19 @@ class ReportForm extends Component {
       return (<div className='alert alert-danger'><b>{this.state.errormsg}</b></div>)
   }
 
-  renderOrgList() {
-    if (this.props.orgs){
-      return (this.props.orgs).map((key, i)=>{
-        return (<option className="w3-input w3-border" value={key.orgId} key={i}> {key.orgName} </option>)
+  renderMinistryList() {
+    if (this.props.ministries){
+      return (this.props.ministries).map((key, i)=>{
+        return (<option className="w3-input w3-border" value={key.ministryId} key={i}> {key.ministryName} </option>)
       })
     }
   }
 
   renderDepartmentList(){
-    if (this.props.orgs && this.state.orgId){
-      let orgId = this.state.orgId
-      return (this.props.orgs).map((key, i)=>{
-        if (key.orgId===orgId){
+    if (this.props.ministries && this.state.ministryId){
+      let ministryId = this.state.ministryId
+      return (this.props.ministries).map((key, i)=>{
+        if (key.ministryId===ministryId){
           return (
             (!key.departments.length>0)
               ?
@@ -369,10 +369,10 @@ class ReportForm extends Component {
         <h4 className='mb-4'>Enter relevant details</h4>
 
         <div className="form-group">
-          <label>Organization:</label>
-          <select className="custom-select" name="orgId" required 
+          <label>Ministry:</label>
+          <select className="custom-select" name="ministryId" required 
             onChange={this.handleChange} >
-              {this.renderOrgList()}
+              {this.renderMinistryList()}
           </select>
         </div>
 
@@ -386,8 +386,8 @@ class ReportForm extends Component {
         </div>
 
         <div className="form-group">
-          <label>Organization Name:</label>
-          <input className="form-control" placeholder="Enter Organization Name" name="name" type="text" required 
+          <label>Ministry Name:</label>
+          <input className="form-control" placeholder="Enter Ministry Name" name="name" type="text" required 
            onChange={this.handleChange} />
         </div>
 
@@ -501,14 +501,14 @@ export default class Report extends Component{
   state = {
     loaded: false,
     userRegistered: false,
-    orgs: null,
+    ministries: null,
     reportSuccess: false, userEmail: undefined, caseId: undefined
   }
 
   componentDidMount() {
-    axios.get('/getorganizations')
+    axios.get('/getministries')
     .then(response=>{
-      if (response.status===200) this.setState({orgs: response.data.data})
+      if (response.status===200) this.setState({ministries: response.data.data})
     })
   }
 
@@ -522,7 +522,7 @@ export default class Report extends Component{
         <Header />
         {(!this.state.userRegistered) ?
           <NewUser setUserRegistered={()=>this.setState({userRegistered: true})} /> :
-          <ReportForm orgs={this.state.orgs}
+          <ReportForm ministries={this.state.ministries}
             setReportSuccess = { (caseId, email)=> (
               this.setState({
                 caseId: caseId,

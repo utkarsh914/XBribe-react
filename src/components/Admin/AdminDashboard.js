@@ -11,7 +11,7 @@ import Nav from "../Common/Nav";
 // function to render all posts
 const Post = (props) => (
   <div className={props.case.status==='resolved' ? 'alert alert-success mb-2' : 'alert alert-dark mb-2'}>
-    <h5>Organization: {props.orgs[props.case.orgId]}</h5>
+    <h5>Ministry: {props.ministries[props.case.ministryId]}</h5>
     <p className="mb-0">{props.case.place}, {props.case.date}</p>
   </div>
 )
@@ -47,7 +47,7 @@ class Paginate extends Component {
     return (
       <div>
         < FilterModal
-          orgs={ this.state.data.orgs }
+          ministries={ this.state.data.ministries }
           error={ this.state.data.error }
           sendData={ (data) => {
             this.setState({ data: data, filter: data.filter })
@@ -74,7 +74,7 @@ class FilterModal extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { orgId: '', from: '', to: '', status: '', orderBy: '', size: '', pageNo: '1' };
+    this.state = { ministryId: '', from: '', to: '', status: '', orderBy: '', size: '', pageNo: '1' };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -89,6 +89,7 @@ class FilterModal extends Component {
 
     axios.get('/admin/dashboard', { params: this.state, withCredentials: true })
     .then(response=>{
+      if (response.data.filter.ministryId === '') this.setState({ministryId: ''});
       this.props.sendData(response.data);
     })
     .catch(err=>{
@@ -97,9 +98,9 @@ class FilterModal extends Component {
   }
 
   renderOrgList() {
-    if (this.props.orgs && !this.props.error){
-      return Object.keys(this.props.orgs).map((key, i)=>{
-        return (<option className="w3-input w3-border" value={key} key={i}> {this.props.orgs[key]} </option>)
+    if (this.props.ministries && !this.props.error){
+      return Object.keys(this.props.ministries).map((key, i)=>{
+        return (<option className="w3-input w3-border" value={key} key={i}> {this.props.ministries[key]} </option>)
       })
     }
   }
@@ -119,9 +120,9 @@ class FilterModal extends Component {
               <form id="filterForm" method="get" onSubmit={this.handleSubmit}>
     
                 <div className="form-group">
-                  <label><b>Organization</b></label>
-                  <select name="orgId" className="custom-select" value={this.state.orgId} onChange={this.handleChange}>
-                    <option value="any">Any Organization</option>
+                  <label><b>Ministry</b></label>
+                  <select name="ministryId" className="custom-select" value={this.state.ministryId} onChange={this.handleChange}>
+                    <option value="any">Any Ministry</option>
                     {this.renderOrgList()}
                   </select>
                 </div>
@@ -214,7 +215,7 @@ class FilterModal extends Component {
 //               <Link className="nav-link" to="/">Public Home</Link>
 //             </li>
 //             <li className="nav-item">
-//               <Link className="nav-link" to="/admin/manage-org">Manage Organizations</Link>
+//               <Link className="nav-link" to="/admin/manage-org">Manage Ministrys</Link>
 //             </li>
 //             <li className="nav-item">
 //               <div className="nav-link modal-toggle" data-toggle="modal" data-target="#filterModal">Filter Reports</div>
@@ -235,7 +236,7 @@ class Container extends Component {
   showReports() {
     if (this.props.data.posts){
       return (this.props.data.posts.map((currentPost, i)=>{
-        return <Post case={currentPost} orgs={this.props.data.orgs}  key={i} />
+        return <Post case={currentPost} ministries={this.props.data.ministries}  key={i} />
       }))
     }
   }
@@ -336,6 +337,7 @@ export default class AdminDashboard extends Component {
           < Nav 
             setLoggedOut={ ()=>this.setState({ redirectTo: '/admin/login'}) }
             type = {'admin'}
+            user={'admin'}
             loggedIn = {true}
           />
           {/* < Nav sendData={(loginStatus)=> this.setState({loggedIn: loginStatus, redirectTo: '/admin/login'})} /> */}

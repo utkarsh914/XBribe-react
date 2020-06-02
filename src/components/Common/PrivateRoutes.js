@@ -45,15 +45,16 @@ export const AdminRoute = ({ component: Component, ...rest }) => {
 }
 
 
-export const OrgRoute = ({ component: Component, ...rest }) => {
+export const MinistryRoute = ({ component: Component, ...rest }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     async function getAuth(){
-      let response = await axios.get('/org/', { withCredentials: true })
+      let response = await axios.get('/ministry/', { withCredentials: true })
+      console.log('from min route\n', response);
       if (!response.data.user) setIsAuthenticated(false)
-      else if (response.data.user.orgId) {
+      else if (response.data.user.ministryId) {
         setUser(response.data.user)
         setIsAuthenticated(true)
       } else {
@@ -70,7 +71,7 @@ export const OrgRoute = ({ component: Component, ...rest }) => {
   return (
     <Route {...rest} render={props =>
       !isAuthenticated ? (
-        <Redirect to='/org/login'/>
+        <Redirect to='/ministry/login'/>
       ) : (
         <Component  user={user} {...props} />
       )
